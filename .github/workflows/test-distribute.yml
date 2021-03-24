@@ -18,14 +18,13 @@ jobs:
       should_run: ${{ steps.check.outputs.should_run }}
     runs-on: ubuntu-latest
     steps:
+      - name: Grant exec permissions for check_CD.sh 
+        run: chmod +x .github/check_CD.sh
       - name: Check
         env:
           KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
           PR_MERGED: ${{ github.event.pull_request.merged }}
-        run: |
-          pwd
-          sudo apt-get install jq
-          .github/check_CD.sh
+        run: .github/check_CD.sh
 
   build_and_distribute:
     needs: check
