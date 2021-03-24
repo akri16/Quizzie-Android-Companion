@@ -28,7 +28,6 @@ jobs:
           PR_MERGED: ${{ github.event.pull_request.merged }}
         run: |
           .github/check_CD.sh
-          echo "::set-output name=should_run::true"
       - name: output
         env:
           SHOULD_RUN: ${{ steps.check.outputs.should_run }}      
