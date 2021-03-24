@@ -37,6 +37,7 @@ jobs:
 
   build_and_distribute:
     needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 1.8
