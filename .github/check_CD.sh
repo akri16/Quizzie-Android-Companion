@@ -29,15 +29,21 @@ check_is_last_exec_time () {
     echo $(( (current_time - last_exec) > diff_unix ))
 }
 
-if ([ $GITHUB_EVENT = "schedule" ] && [ $(get_value_at_key has_changes) = 1 ]) || [ $GITHUB_EVENT = "workflow_dispatch" ];
-then
-    set_value_at_key has_changes 0;
+enable_work_run () {
+    set_value_at_key has_changes 0
+    set_value_at_key last_exec $(get_current_time)
     echo "::set-output name=should_run::true"
+}
 
-elif [ $(check_is_last_exec_time) = 0 ] && [ ${PR_MERGED} = true ];   
+if ([ $GITHUB_EVENT_NAME = "schedule" ] && [ $(get_value_at_key has_changes) = 1 ]) || [ $GITHUB_EVENT_NAME = "workflow_dispatch" ]
 then
-    set_value_at_key has_changes 1;
-else
-    set_value_at_key has_changes 0;
-    set_value_at_key last_exec $(get_current_time);
+    enable_work_run
+elif [ ${PR_MERGED} = true ]
+then
+    if [ $(check_is_last_exec_time) = 0 ]
+    then
+        set_value_at_key has_changes 1
+    else
+        enable_work_run
+    fi
 fi
