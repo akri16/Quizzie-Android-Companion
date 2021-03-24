@@ -1,7 +1,7 @@
 #!/bin/sh
 
 HOUR_IN_UNIX=3600
-
+echo "::set-output name=should_run::true"
 set_value_at_key () {
     curl -s --request PUT "https://api.kvstore.io/collections/kv/items/$1" \
             --header "kvstoreio_api_key: ${KV_STORE_API_KEY}" \
@@ -30,8 +30,8 @@ check_is_last_exec_time () {
 }
 
 enable_work_run () {
-    set_value_at_key has_changes 0
-    set_value_at_key last_exec $(get_current_time)
+    set_value_at_key has_changes 0 > /dev/null
+    set_value_at_key last_exec $(get_current_time) > /dev/null
     echo "::set-output name=should_run::true"
 }
 
