@@ -14,7 +14,6 @@ on:
 
 jobs:
   check:
-    if: github.event.pull_request.merged == true
     outputs: 
       should_run: ${{ steps.check.outputs.should_run }}
     runs-on: ubuntu-latest
@@ -22,6 +21,7 @@ jobs:
       - name: Check
         env:
           KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
+          PR_MERGED: ${{ github.event.pull_request.merged }}
         run: |
           sudo apt-get install jq
           .github/check_CD.sh
