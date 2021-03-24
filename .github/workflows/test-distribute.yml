@@ -22,6 +22,7 @@ jobs:
       - name: Grant exec permissions for check_CD.sh 
         run: chmod +x .github/check_CD.sh
       - name: check
+        id: check
         env:
           KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
           PR_MERGED: ${{ github.event.pull_request.merged }}
