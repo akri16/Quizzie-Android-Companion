@@ -1,7 +1,7 @@
 #!/bin/sh
 
 HOUR_IN_UNIX=3600
-echo "::set-output name=should_run::true"
+
 set_value_at_key () {
     curl -s --request PUT "https://api.kvstore.io/collections/kv/items/$1" \
             --header "kvstoreio_api_key: ${KV_STORE_API_KEY}" \
@@ -37,6 +37,7 @@ enable_work_run () {
 
 if ([ $GITHUB_EVENT_NAME = "schedule" ] && [ $(get_value_at_key has_changes) = 1 ]) || [ $GITHUB_EVENT_NAME = "workflow_dispatch" ]
 then
+    echo "marker"
     enable_work_run
 elif [ ${PR_MERGED} = true ]
 then
