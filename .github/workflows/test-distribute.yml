@@ -1,16 +1,34 @@
-# This workflow will build the Android project
+# This workflow will distribute the Android app to testers
 
-name: Android Basic Build
+name: Test Distribute
 
 on:
   pull_request:
     branches: [ main ]
     types: [closed]
+
+  schedule:
+    - cron: "0 2 * * 0-6"
+
   workflow_dispatch:
 
 jobs:
-  build:
+  check:
     if: github.event.pull_request.merged == true
+    outputs: 
+      should_run: ${{ steps.check.outputs.should_run }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check
+        env:
+          KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
+        run: |
+          sudo apt-get install jq
+          .github/check_CD.sh
+
+  build_and_distribute:
+    needs: check
+    if: needs.outputs.should_run == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
