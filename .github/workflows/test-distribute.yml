@@ -27,9 +27,11 @@ jobs:
           PR_MERGED: ${{ github.event.pull_request.merged }}
         run: .github/check_CD.sh
       - name: output
+        env:
+          SHOULD_RUN: ${{ steps.check.outputs.should_run }}      
         run: |
-          echo "${{ steps.check.outputs.should_run }}"
-          echo "$((${{ steps.check.outputs.should_run }} == true))"
+          echo "$SHOULD_RUN"
+          echo $(($SHOULD_RUN == true))
 
   build_and_distribute:
     needs: check
