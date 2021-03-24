@@ -31,7 +31,7 @@ jobs:
           SHOULD_RUN: ${{ steps.check.outputs.should_run }}      
         run: |
           echo "$SHOULD_RUN"
-          echo $(($SHOULD_RUN == true))
+          if [[ $SHOULD_RUN == true ]]; then echo "$SHOULD_RUN"; fi 
 
   build_and_distribute:
     needs: check
