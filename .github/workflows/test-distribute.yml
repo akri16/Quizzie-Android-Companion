@@ -26,6 +26,10 @@ jobs:
           KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
           PR_MERGED: ${{ github.event.pull_request.merged }}
         run: .github/check_CD.sh
+      - name: output
+          run: |
+            echo "${{ steps.check.outputs.should_run }}"
+            echo "$((${{ steps.check.outputs.should_run }} = true))"
 
   build_and_distribute:
     needs: check
