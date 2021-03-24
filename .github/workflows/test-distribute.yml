@@ -19,7 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Grant exec permissions for check_CD.sh 
-        run: chmod +x .github/check_CD.sh
+        run: |
+          ls
+          ls .github
+          chmod +x .github/check_CD.sh
       - name: Check
         env:
           KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
