@@ -23,6 +23,7 @@ jobs:
           KV_STORE_API_KEY: ${{ secrets.KV_STORE_API_KEY }}
           PR_MERGED: ${{ github.event.pull_request.merged }}
         run: |
+          pwd
           sudo apt-get install jq
           .github/check_CD.sh
 
@@ -40,7 +41,6 @@ jobs:
         run: |
           chmod +x gradlew
           chmod +x .github/encrypted_secrets/decrypt_secrets.sh
-          pwd
       - name: Decrypt Secrets
         env:
           SECRETS_DECRYPT_PASSPHRASE: ${{ secrets.SECRETS_DECRYPT_PASSPHRASE }}
